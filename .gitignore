@@ -1,0 +1,14 @@
+/*
+utils/*
+
+!.gitignore
+!utils/
+!utils/tools.py
+!utils/permission.py
+!utils/hooks.py
+
+!s01-Agent Loop
+!s02_tool_use
+!s03_permission
+!S04_hooks
+!s05_todo_write
