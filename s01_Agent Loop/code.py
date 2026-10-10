@@ -2,11 +2,9 @@ from email import message
 from re import A
 import subprocess
 import os
-import anthropic
 
 from anthropic import Anthropic
 from dotenv import load_dotenv
-from mcp import Tool
 from regex import T
 
 load_dotenv(override=True)
@@ -57,7 +55,7 @@ def Agent_loop(Message:list):
     while True:
         response = client.messages.create(
             model=Model, messages = Message,system = System,
-            tools= Tools,max_tokens=8000,extra_body = {"thinking": {"type": "disabled"}})
+            tools= Tools,max_tokens=8000)
         Message.append({"role":"assistant","content":response.content})
         if response.stop_reason != "tool_use":
             return 

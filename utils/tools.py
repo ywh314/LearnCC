@@ -10,16 +10,17 @@ from anthropic import Anthropic
 from dotenv import load_dotenv
 
 from .hooks import trigger_hooks
+from .skills import SKILL_REGISTRY
 
 WORKDIR = Path.cwd()
 CURRENT_TODOS: list[dict] = []
 
 # 先加载 .env，再创建客户端，避免依赖入口文件的初始化顺序。
 load_dotenv(override=True)
-if os.getenv("ANTHROPIC_BASE_URL"):
-    os.environ.pop("ANTHROPIC_AUTH_TOKEN", None)
+# 保留 AUTH_TOKEN，让 SDK 使用与 Claude Code 一致的 Bearer 认证。
 client = Anthropic(base_url=os.getenv("ANTHROPIC_BASE_URL"))
 MODEL = os.getenv("MODEL_ID")
+
 
 
 def run_bash(command: str) -> str:
@@ -202,3 +203,10 @@ def spawn_subagent(description: str) -> str:
             result = "Subagent stopped after 30 turns without final answer."
     print(f"\033[35m[Subagent done]\033[0m")
     return result  # only summary, entire message history discarded
+
+def load_skill(name: str) -> str:
+    """加载完整 skill 内容。通过 registry 查找——不允许 path traversal。"""
+    skill = SKILL_REGISTRY.get(name) #防止报错写法,字典
+    if not skill:
+        return f"Skill not found: {name}"
+    return skill["content"]

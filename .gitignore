@@ -1,14 +1,32 @@
+# ==========================
+# 1. 默认忽略根目录所有内容
+# ==========================
 /*
-utils/*
 
-!.gitignore
-!utils/
-!utils/tools.py
-!utils/permission.py
-!utils/hooks.py
+# ==========================
+# 2. 保留Git配置文件
+# ==========================
+!/.gitignore
+!/.gitattributes
 
-!s01-Agent Loop
-!s02_tool_use
-!s03_permission
-!S04_hooks
-!s05_todo_write
+# ==========================
+# 3. 白名单：允许跟踪的目录
+# ==========================
+!/utils/
+!/skills/
+
+!/s01_Agent Loop/
+!/s02_tool_use/
+!/s03_permission/
+!/S04_hooks/
+!/s05_todo_write/
+!/s07_skill_loading/
+!/s08_context_compact/
+!/s09_memory/
+!/s10_system_prompt/
+
+# ==========================
+# 4. 排除Python缓存
+# ==========================
+__pycache__/
+*.pyc

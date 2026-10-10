@@ -40,7 +40,7 @@ def Agent_loop(Message:list):
     while True:
         response = client.messages.create(
             model=Model, messages = Message,system = System,
-            tools= TOOLS,max_tokens=8000,extra_body = {"thinking": {"type": "disabled"}})
+            tools= TOOLS,max_tokens=8000)
         Message.append({"role":"assistant","content":response.content})
         if response.stop_reason != "tool_use":
             return 

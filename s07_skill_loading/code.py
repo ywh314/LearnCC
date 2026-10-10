@@ -7,13 +7,17 @@ import sys
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from utils.tools import run_bash, run_read, run_write, run_edit, run_glob
+
+from utils.tools import run_bash, run_read, run_write, run_edit, run_glob,load_skill
 from utils.hooks import register_hook,trigger_hooks,permission_hook, log_hook, large_output_hook, context_inject_hook, summary_hook
+from utils.skills import SKILL_REGISTRY,build_system
 
 load_dotenv(override=True)
 client = Anthropic(base_url= os.getenv("ANTHROPIC_BASE_URL"))
 Model = os.getenv("MODEL_ID")
-System = f"你好，你是coding agent，叫做codex，项目目录位于{os.getcwd()},代码放在当前目录中"
+
+#---------------SKILL注入提示词----------------------
+System = build_system(SKILL_REGISTRY)
 
 # TOOL注册input_schema写法，type，properties,required
 TOOLS = [
@@ -27,12 +31,15 @@ TOOLS = [
      "input_schema": {"type": "object", "properties": {"path": {"type": "string"}, "old_text": {"type": "string"}, "new_text": {"type": "string"}}, "required": ["path", "old_text", "new_text"]}},
     {"name": "glob", "description": "Find files matching a glob pattern.",
      "input_schema": {"type": "object", "properties": {"pattern": {"type": "string"}}, "required": ["pattern"]}},
+    {"name": "load_skill", "description": "Load the full content of a skill by name.",
+     "input_schema": {"type": "object", "properties": {"name": {"type": "string"}}, "required": ["name"]}},
 ]
 TOOL_HANDLERS = {"bash":run_bash,
                  "read_file":run_read,
                  "write_file":run_write,
                  "edit_file":run_edit,
-                 "glob":run_glob}
+                 "glob":run_glob,
+                 "load_skill":load_skill}
 
 register_hook("UserPromptSubmit", context_inject_hook)
 register_hook("PreToolUse", permission_hook)
