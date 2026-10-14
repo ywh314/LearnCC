@@ -9,7 +9,7 @@ sys.path.insert(0, str(PROJECT_ROOT))
 
 from utils.tools import run_bash, run_read, run_write, run_edit, run_glob,load_skill
 from utils.hooks import register_hook,trigger_hooks,permission_hook, log_hook, large_output_hook, context_inject_hook, summary_hook
-from utils.skills import SKILL_REGISTRY,build_system
+from utils.skills import SKILL_REGISTRY, list_skills
 from utils.compact import tool_result_budget,snip_compact,micro_compact,compact_history,reactive_compact
 from utils.compact import estimate_size,CONTEXT_LIMIT
 
@@ -18,7 +18,16 @@ client = Anthropic(base_url= os.getenv("ANTHROPIC_BASE_URL"))
 Model = os.getenv("MODEL_ID")
 
 #---------------SKILL注入提示词----------------------
-System = build_system(SKILL_REGISTRY)
+def build_system() -> str:
+    """s08：skill catalog 版 SYSTEM（与 s07 相同）。"""
+    catalog = list_skills(SKILL_REGISTRY)
+    return (
+        f"You are a coding agent at {os.getcwd()}. "
+        f"Skills available:\n{catalog}\n"
+        "Use load_skill to get full details when needed."
+    )
+
+System = build_system()
 
 # TOOL注册input_schema写法，type，properties,required
 TOOLS = [

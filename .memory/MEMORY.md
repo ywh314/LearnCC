@@ -1,0 +1,5 @@
+- [no_mock_tests](no_mock_tests.md) — 用户要求测试不允许 mock，必须真实调用
+- [project_uses_utils](project_uses_utils.md) — 本项目工具函数统一放 utils/ 模块
+- [user-prefers-concise-answers](user-prefers-concise-answers.md) — 用户要求回答时精简一些
+- [user_prefers_chinese](user_prefers_chinese.md) — 用户偏好中文回复
+- [user_prefers_tabs](user_prefers_tabs.md) — 用户写代码用 tab 缩进，不要用空格

@@ -39,15 +39,5 @@ def list_skills(SKILL_REGISTRY:dict) -> str: #根据SKILL_REGISTRY列出每个sk
         return "(no skills found)"
     return "\n".join(f"- **{s['name']}**: {s['description']}" for s in SKILL_REGISTRY.values())
 
-# s07：SYSTEM 包含 skill catalog（便宜——只有名称和描述）
-def build_system(SKILL_REGISTRY) -> str:
-    """启动时注入 skill catalog，构建 SYSTEM prompt。"""
-    catalog = list_skills(SKILL_REGISTRY)
-    return (
-        f"You are a coding agent at {WORKDIR}. "
-        f"Skills available:\n{catalog}\n"
-        "Use load_skill to get full details when needed."
-    )
-
 SKILL_REGISTRY: dict[str, dict] = {}
 _scan_skills(SKILL_REGISTRY)

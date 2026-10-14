@@ -68,3 +68,13 @@ def summary_hook(messages: list):
                      if isinstance(b, dict) and b.get("type") == "tool_result")
     print(f"\033[90m[HOOK] Stop: session used {tool_count} tool calls\033[0m")
     return None
+
+
+# ═══════════════════════════════════════════════════════════
+# 默认 hook 装配：import 即注册（与 skills.py 末尾扫描同一模式）
+# ═══════════════════════════════════════════════════════════
+register_hook("UserPromptSubmit", context_inject_hook)
+register_hook("PreToolUse", permission_hook)
+register_hook("PreToolUse", log_hook)
+register_hook("PostToolUse", large_output_hook)
+register_hook("Stop", summary_hook)
